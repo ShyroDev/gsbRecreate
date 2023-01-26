@@ -3,19 +3,15 @@
 class LigneFraisForfait 
 {
     private string $idVisiteur;
-    private string $mois;
+    private DateTime $mois;
     private int $quantite;
     private FicheFrais $ficheFrais;
     private FraisForfait $fraisForfait;
+    private LigneFraisForfait $ligneFraisForfait;
 
 
-    public function __construct(string $idVisiteur, string $mois, int $quantite, FicheFrais $ficheFrais, FraisForfait $fraisForfait)
+    public function __construct()
     {
-        $this->idVisiteur = $idVisiteur;
-        $this->mois = $mois;
-        $this->quantite = $quantite;
-        $this->ficheFrais = $ficheFrais;
-        $this->fraisForfait = $fraisForfait;
 
     }
 
@@ -35,19 +31,24 @@ class LigneFraisForfait
      * 
      * @param string $idVisteur
      * 
-     * @return void
+     * @return LigneFraisForfait
      */
-    public function setIdVisiteur(string $idVisiteur) : void
+    public function setIdVisiteur(string $idVisiteur)  : LigneFraisForfait
     {
-        $this->idVisiteur = $idVisiteur;
+        if(!empty($idVisiteur))
+        {
+            $this->idVisiteur = $idVisiteur;
+        }
+
+        return $this;
     }
 
     /**
      * Permet d'obtenir le mois 
      * 
-     * @return string 
+     * @return DateTime 
      */
-    public function getMois() : string 
+    public function getMois() : DateTime 
     {
         return $this->mois;
     }
@@ -55,13 +56,18 @@ class LigneFraisForfait
     /**
      * Permet de définir le mois
      * 
-     * @param string $mois
+     * @param DateTime $mois
      * 
-     *@return void
+     *@return 
      */
-    public function setMois(string $mois) : void 
+    public function setMois(DateTime $mois)  : LigneFraisForfait
     {
-        $this->mois = $mois; 
+        if(!empty($mois))
+        {
+            $this->mois = $mois;
+        }
+
+        return $this;
     }
 
     /**
@@ -130,11 +136,16 @@ class LigneFraisForfait
      * 
      * @param FraisForfait $fraisForfait 
      * 
-     * @return void 
+     * @return LigneFraisForfait 
      */
-    public function setFraisForfait(FraisForfait $fraisForfait) : void 
+    public function setFraisForfait(FraisForfait $fraisForfait)  : LigneFraisForfait
     {
-        $this->fraisForfait = $fraisForfait;
+        if(!empty($fraisForfait))
+        {
+            $this->fraisForfait = $fraisForfait;
+        }
+
+        return $this;
     }
 
 

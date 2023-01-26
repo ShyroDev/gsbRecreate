@@ -12,18 +12,8 @@ class Visiteur
     private string $ville;
     private DateTime $dateEmbauche;
 
-    public function __construct(string $id, string $nom, string $prenom, string $login, string $password, 
-    string $adresse, string $zipcode, string $ville, DateTime $dateEmbauche)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->nom = $nom;
-        $this->prenom = $prenom;
-        $this->login = $login;
-        $this->password = $password;
-        $this->adresse = $adresse;
-        $this->zipcode = $zipcode;
-        $this->ville = $ville;
-        $this->dateEmbauche = $dateEmbauche;
 
     }
 

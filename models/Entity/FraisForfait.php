@@ -7,11 +7,9 @@ class FraisForfait
     private float $montant;
 
 
-    public function __construct(string $id, string $libelle, float $montant)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->libelle = $libelle;
-        $this->montant = $montant;
+      
     }
 
 

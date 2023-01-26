@@ -1,6 +1,6 @@
 <?php 
 
-class FicherFraisRepository 
+class FicheFraisRepository 
 {
      /**
     * Retourne les informations d'un visiteur
@@ -64,7 +64,7 @@ class FicherFraisRepository
      * @param $idVisiteur 
      * @return mois sous la forme aaaamm
     */
-    public function dernierMoisSaisi(string $idVisiteur) : string 
+    public static function dernierMoisSaisi(string $idVisiteur) : string 
     {
 
         $maximumMois = ("SELECT MAX(mois) AS dernierMois FROM FicheFrais WHERE FicheFrais.idVisiteur = ?");
@@ -84,21 +84,6 @@ class FicherFraisRepository
         }
 
         return "";
-    }
-
-
-
-    /**
-     * Crée une nouvelle fiche de frais et les lignes de frais au forfait pour un visiteur et un mois donnés
-    
-     * récupère le dernier mois en cours de traitement, met à 'CL' son champs idEtat, crée une nouvelle fiche de frais
-     * avec un idEtat à 'CR' et crée les lignes de frais forfait de quantités nulles 
-     * @param $idVisiteur 
-     * @param mois sous la forme aaaamm
-    */
-    public function creeNouvellesLignesFrais(string $idVisiteur,string $mois) 
-    {
-
     }
 
 
@@ -147,7 +132,7 @@ class FicherFraisRepository
      * @param $mois sous la forme aaaamm
      * @return un tableau avec des champs de jointure entre une fiche de frais et la ligne d'état 
     */	
-    public function getLesInfosFicheFrais($idVisiteur, $mois)  : array
+    public static function getLesInfosFicheFrais($idVisiteur, $mois)  : array
     {
         $infoFicheFraisData = ("SELECT FicheFrais.idEtat AS idEtat, FicheFrais.dateModif AS dateModif, FicheFrais.nbJustificatifs AS nbJustificatifs, 
         FicheFrais.montantValide AS montantValide, Etat.libelle AS libEtat FROM  FicheFrais INNER JOIN Etat ON FicheFrais.idEtat = Etat.id 
@@ -177,7 +162,7 @@ class FicherFraisRepository
     * @param $idVisiteur 
     * @param $mois sous la forme aaaamm
     */
-    public function majEtatFicheFrais($idVisiteur, $mois, $etat) 
+    public static function majEtatFicheFrais($idVisiteur, $mois, $etat) 
     {
         $majEtatFicheFraisData = ("UPDATE FicheFrais SET idEtat = ?, dateModif = NOW() 
 		WHERE FicheFrais.idVisiteur = ? AND FicheFrais.mois = ?");
@@ -195,29 +180,30 @@ class FicherFraisRepository
         }
     }
 
+
+
+    public static function creeFicheFrais(FicheFrais $ficheFrais) : bool
+    {       
+
+            $requete = ("INSERT INTO FicheFrais(idVisiteur,mois,nbJustificatifs,montantValide,dateModif,idEtat)VALUES(?,?,?,?,?,?");
+
+            $connexion = Database::getConnexion();
+
+            if(isset($connexion))
+            {                
+                $requete = $connexion->prepare($requete);
+
+                if ($requete !== false)
+                {
+                    return $requete->execute([$ficheFrais->getIdVisiteur(), $ficheFrais->getMois(), 
+                    $ficheFrais->getNbJustificatifs(), $ficheFrais->getMontantValide(), 
+                    $ficheFrais->getDateModif(), $ficheFrais->getEtat()]);
+                }
+            }
+ 
+    }
+
 }
 
 
 ?>
-
-
-
-
-
-	public function creeNouvellesLignesFrais($idVisiteur,$mois){
-		$dernierMois = $this->dernierMoisSaisi($idVisiteur);
-		$laDerniereFiche = $this->getLesInfosFicheFrais($idVisiteur,$dernierMois);
-		if($laDerniereFiche['idEtat']=='CR'){
-				$this->majEtatFicheFrais($idVisiteur, $dernierMois,'CL');			
-		}
-		$req = "insert into FicheFrais(idVisiteur,mois,nbJustificatifs,montantValide,dateModif,idEtat) 
-		values('$idVisiteur','$mois',0,0,now(),'CR')";
-		PdoGsb::$monPdo->exec($req);
-		$lesIdFrais = $this->getLesIdFrais();
-		foreach($lesIdFrais as $uneLigneIdFrais){
-			$unIdFrais = $uneLigneIdFrais['idfrais'];
-			$req = "insert into LigneFraisForfait(idVisiteur,mois,idFraisForfait,quantite) 
-			values('$idVisiteur','$mois','$unIdFrais',0)";
-			PdoGsb::$monPdo->exec($req);
-		 }
-	}

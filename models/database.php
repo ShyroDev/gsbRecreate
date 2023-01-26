@@ -3,10 +3,10 @@
 class Database
 {
 
-    private static string $DATABASE_ADRESS = "";
-    private static string $DATABASE_NAME = "";
-    private static string $DATABASE_USERNAME = "";
-    private static string $DATABASE_PASSWORD = "";
+    private static string $DATABASE_ADRESS = "localhost:3307";
+    private static string $DATABASE_NAME = "gsb";
+    private static string $DATABASE_USERNAME = "root";
+    private static string $DATABASE_PASSWORD = "azertyuiop";
     private static PDO $connexion;
 
 
@@ -53,9 +53,6 @@ class Database
 
         return null;
     }
-
-
-
 
 
 }

@@ -16,9 +16,8 @@ class LigneFraisForfaitRepository
     */
     public function majFraisForfait(string $idVisiteur,string $mois, $lesFrais) : array
     {
-        $lesCles =array_keys($lesFrais);
 
-        foreach($lesCles as $unIdFrais)
+        foreach($lesFrais as $unIdFrais)
         {
             $qte = $lesFrais[$unIdFrais];
 
@@ -43,7 +42,61 @@ class LigneFraisForfaitRepository
 
         return array();
     }
+
+    public static function creeNouvelleLigne(LigneFraisForfait $ligneFraisForfait)
+    {
+        $requete = ("INSERT INTO LigneFraisForfait(idVisiteur,mois,idFraisForfait,quantite)VALUES(?,?,?,?)");
+
+            $connexion = Database::getConnexion();
+
+            if(isset($connexion))
+            {
+                $requete = $connexion->prepare($requete);
+
+                if($requete !== false)
+                {
+                    return $requete->execute([$ligneFraisForfait->getIdVisiteur(), $ligneFraisForfait->getMois(), 
+                    $ligneFraisForfait->getQuantite(),$ligneFraisForfait->getFicheFrais(), $ligneFraisForfait->getFraisForfait()]);
+
+                }
+            }
+    }
+
+    public function nouvelleLigne(string $idVisiteur,string $mois) : void
+    {
+
+        $dernierMois = FicheFraisRepository::dernierMoisSaisi($idVisiteur);                                           
+        $laDerniereFiche = FicheFraisRepository::getLesInfosFicheFrais($idVisiteur,$dernierMois);     
+
+
+        if($laDerniereFiche['idEtat'] == 'CR') 
+        {
+                FicheFraisRepository::majEtatFicheFrais($idVisiteur, $dernierMois,'CL');			
+        }
+
+
+        $ficheFrais = new FicheFrais();
+        $ficheFrais->setIdVisiteur($idVisiteur)->setMois(new DateTime($mois), 0, 0, new DateTime(), "CR");
+        FicheFraisRepository::creeFicheFrais($ficheFrais);
+
+        $lesIdFrais = FraisForfaitRepository::getLesIdFrais();
+
+
+        foreach($lesIdFrais as $uneLigneIdFrais)
+        {
+            $unIdFrais = $uneLigneIdFrais['idfrais'];
+
+            $ligneFraisForfait = new LigneFraisForfait();
+            $ligneFraisForfait->setIdVisiteur($idVisiteur)->setMois(new DateTime())->setFraisForfait($unIdFrais)->setQuantite(0);
+
+            LigneFraisForfaitRepository::creeNouvelleLigne($ligneFraisForfait);
+        }
+					
+    }
 }
 
 ?>
+
+
+
 

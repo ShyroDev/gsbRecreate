@@ -3,21 +3,17 @@
 class FicheFrais 
 {
     private string $idVisiteur;
-    private string $mois;
+    private DateTime $mois;
     private int $nbJustificatifs;
     private float $montantValide;
     private DateTime $dateModif;
     private Etat $etat;
+    private FicheFrais $ficheFrais;
 
 
-    public function __construct(string $idVisiteur, string $mois, int $nbJustificatifs, float $montantValide, DateTime $dateModif, Etat $etat)   
+    public function __construct()   
     {
-        $this->idVisiteur = $idVisiteur;
-        $this->mois = $mois;
-        $this->nbJustificatifs = $nbJustificatifs;
-        $this->montantValide = $montantValide;
-        $this->dateModif = $dateModif;
-        $this->etat = $etat;
+        
     }
 
 
@@ -36,19 +32,24 @@ class FicheFrais
     * 
     * @param string $idVisiteur
     * 
-    * @return void
+    * @return FicheFrais
     */
-    public function setIdVisiteur(string $idVisiteur) : void 
+    public function setIdVisiteur(string $idVisiteur)  : FicheFrais
     {
-        $this->idVisiteur = $idVisiteur;
+        if(!empty($idVisiteur))
+        {
+            $this->idVisiteur = $idVisiteur;
+        }
+
+        return $this;
     }
 
     /**
      * Permet d'obtenir le mois 
      * 
-     * @return string
+     * @return DateTime
      */
-    public function getMois() : string 
+    public function getMois() : DateTime 
     {
         return $this->mois;
     }
@@ -56,11 +57,11 @@ class FicheFrais
     /**
      * Permet de définir le mois 
      * 
-     * @param string $mois
+     * @param DateTime $mois
      * 
      * @return void
      */
-    public function setMois(string $mois) : void 
+    public function setMois(DateTime $mois) : void 
     {
         $this->mois = $mois;
     }
@@ -155,6 +156,8 @@ class FicheFrais
     {
         $this->etat = $etat;
     }
+
+
 }
 
 ?>

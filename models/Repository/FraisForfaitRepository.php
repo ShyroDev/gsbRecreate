@@ -16,11 +16,14 @@ class FraisForfaitRepository
 		LigneFraisForfait.quantite AS quantite FROM LigneFraisForfait INNER JOIN FraisForfait 
 		ON FraisForfait.id = LigneFraisForfait.idFraisForfait
 		WHERE LigneFraisForfait.idVisiteur = ? AND LigneFraisForfait.mois= ? 
-		ORDER BY LigneFraisForfait.idFraisForfait");	
+		ORDER BY LigneFraisForfait.idFraisForfait");
+
 		$connexion = Database::getConnexion();	
+
 		if(isset($connexion)) 
 		{
-			$fraisForfaitData = $connexion->prepare($fraisForfaitData);	
+			$fraisForfaitData = $connexion->prepare($fraisForfaitData);
+
 			if($fraisForfaitData !== false) 
 	         {
 	             $fraisForfaitData->execute([$idVisiteur, $mois]);
@@ -35,13 +38,16 @@ class FraisForfaitRepository
  
 	* @return un tableau associatif 
 	*/
-	public function getLesIdFrais() : array
+	public static function getLesIdFrais() : array
 	{
-		$idFraisForfaitData = ("SELECT FraisForfait.id AS idfrais FROM FraisForfait ORDER BY FraisForfait.id");	
+		$idFraisForfaitData = ("SELECT FraisForfait.id AS idfrais FROM FraisForfait ORDER BY FraisForfait.id");
+			
 		$connexion = Database::getConnexion();	
+
 		if(isset($connexion))
 		{
 			$idFraisForfaitData = $connexion->prepare($idFraisForfaitData);	
+			
 			if($idFraisForfaitData !== false)
 			{
 				return $idFraisForfaitData->fetchAll(PDO::FETCH_ASSOC);
@@ -60,15 +66,19 @@ class FraisForfaitRepository
 	{	
 		$countVisiteurFicheFraisData = ("SELECT COUNT(*) AS nblignesfrais FROM FicheFrais 
 		WHERE FicheFrais.mois = ? AND FicheFrais.idVisiteur = ?");	
+
 		$ok = false;	
+
 		$connexion = Database::getConnexion();	
 		if(isset($connexion))
 		{
 			$countVisiteurFicheFraisData = $connexion->prepare($countVisiteurFicheFraisData);	
+
 			if($countVisiteurFicheFraisData !== false)
 			{
 				$countVisiteurFicheFraisData->execute([$idVisiteur, $mois]);	
 				$laLigne = $countVisiteurFicheFraisData->fetch(PDO::FETCH_ASSOC);	
+
 				if($laLigne['nblignesfrais'] == 0){
 					$ok = true;
 				}

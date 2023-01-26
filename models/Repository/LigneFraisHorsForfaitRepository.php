@@ -68,7 +68,7 @@ class LigneFraisHorsForfaitRepository
     
      * @param $idFrais 
     */
-    public function supprimerFraisHorsForfait($idFrais) 
+    public function supprimerFraisHorsForfait(string $idFrais) 
     {
         $supprimerFraisHorsForfaitData = ("DELETE FROM LigneFraisHorsForfait WHERE LigneFraisHorsForfait.id = ? ");
 

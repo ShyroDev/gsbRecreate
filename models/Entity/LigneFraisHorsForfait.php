@@ -9,15 +9,8 @@ class LigneFraisHorsForfait
     private FicheFrais $ficheFrais;
 
 
-    public function __construct(int $id, string $libelle, DateTime $date, float $montant, FicheFrais $ficheFrais)
+    public function __construct()
     {
-
-        $this->id = $id;
-        $this->libelle = $libelle;
-        $this->date = $date;
-        $this->montant = $montant;
-        $this->ficheFrais = $ficheFrais;
-
     }
 
 
